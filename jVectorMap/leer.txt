@@ -1,0 +1,8 @@
+https://www.10bestdesign.com/jqvmap/
+
+
+
+Graficar mapa
+
+Solucion para la esctuctura que recibe el mapa 
+https://www.deustoformacion.com/blog/programacion-diseno-web/5-formas-crear-objetos-javascript

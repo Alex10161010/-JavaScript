@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Promise</title>
+		<style>
+			#row {
+				width: 800px;
+				background-color: rgb(128, 78, 78);
+			}
+			#imgCargandox {
+				display: flex;
+				justify-content: center;
+			}
+		</style>
+	</head>
+
+	<body>
+		<h2>Esperando múltiples promesas concurrentes</h2>
+		<p>
+			El método estático
+			<a href="#" rel="nofollow noreferrer" target="_blank"><code>Promise.all()</code></a>
+			acepta una promesa (por ejemplo, una <code>Array</code> ) de promesas y devuelve una nueva promesa,
+			que se resuelve cuando <strong>todas las</strong> promesas en la iterable se han resuelto, o se
+			rechazan si <strong>al menos una</strong> de las promesas en la iterable se ha rechazado.
+		</p>
+
+		<h3>Fuente</h3>
+		<p>https://sodocumentation.net/es/javascript/topic/231/promesas</p>
+		<div id="row">
+			<div id="imgCargandox" class="cargando">
+				<img src="https://media.giphy.com/media/IwSG1QKOwDjQk/giphy.gif" alt="" width="250px" />
+			</div>
+		</div>
+		<div id="imgCargandoy" class="cargando">
+			<img src="https://media.giphy.com/media/IwSG1QKOwDjQk/giphy.gif" alt="" width="250px" />
+		</div>
+		<script src="./promesa.js"></script>
+	</body>
+</html>

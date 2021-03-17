@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body>
+		<p>
+			Counter-Up es un complemento de jQuery que anima un número desde cero (contando hacia él). Es
+			compatible con el conteo progresivo:
+			<span>https://github.com/bfintal/Counter-Up</span>
+		</p>
+		<ul>
+			<li>enteros 12345</li>
+			<li>flotadores 0.1234</li>
+			<li>números formateados 1,234,567.00</li>
+		</ul>
+
+		<span class="counter">1,234,567</span>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/waypoints/2.0.3/waypoints.min.js"></script>
+		<script src="jquery.counterup.min.js"></script>
+		<script>
+			jQuery(document).ready(function ($) {
+				$('.counter').counterUp({
+					delay: 10,
+					time: 1000,
+				});
+			});
+		</script>
+	</body>
+</html>
