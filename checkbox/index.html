@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>AJAX en jQuery</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	</head>
+	<body>
+		<form action="">
+			<input type="checkbox" value="1" checked />
+			<input type="checkbox" value="2" />
+			<input type="checkbox" value="3" checked />
+			<input type="checkbox" value="4" />
+		</form>
+		<script type="text/javascript">
+			var selected = new Array();
+
+			$(document).ready(function () {
+				$('input:checkbox:checked').each(function () {
+					alert($(this).val());
+				});
+			});
+		</script>
+	</body>
+</html>
