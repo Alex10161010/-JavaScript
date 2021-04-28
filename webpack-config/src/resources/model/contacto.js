@@ -14,6 +14,7 @@ class Contacto extends Common {
 		this.telefono = this.getElement('#txttelefono');
 		this.asunto = this.getElement('#txtasunto');
 		this.mensaje = this.getElement('#txtmensaje');
+		this.boton = this.getElement('#btnContacto');
 
 		this.formulario = this.getElement('#formContacto');
 		this.validacion = true;
@@ -63,6 +64,12 @@ class Contacto extends Common {
 			this.obj.mensaje = this.mensaje.value.trim();
 		}
 		return this.validacion;
+	}
+
+	async getFotos() {
+		const resp = await fetch('https://jsonplaceholder.typicode.com/photos?_limit=10');
+		const fotos = await resp.json();
+		return fotos;
 	}
 
 	async saveRegistro(obj) {

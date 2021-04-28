@@ -1,6 +1,7 @@
 /**
  *
  */
+/*----------------Alertify js----------------*/
 import alertify from 'alertifyjs';
 class Common {
 	constructor() {
@@ -9,10 +10,12 @@ class Common {
 	}
 	/* Imprimir Mensaje */
 	alerta(resp) {
+		console.log(resp);
+		console.log(alertify);
 		if (resp.opc == 1) {
 			alertify.success(resp.msj, 8);
 		}
-		if (resp.opc == 4 || resp.opc == 3 || resp.opc == 2) {
+		if (resp.opc == 4 || resp.opc == 3 || resp.opc == 2 || resp.opc == 0) {
 			alertify.warning(resp.msj, 8);
 		}
 	}
