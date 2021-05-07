@@ -1,0 +1,33 @@
+{
+  "name": "mecanica",
+  "version": "1.0.0",
+  "description": "Parcel Boilerplate",
+  "main": "index.js",
+  "scripts": {
+    "dev": "parcel src/login/index.html --out-dir development -p 3000",
+    "produ": "parcel build src/login/index.html -d login --no-cache --public-url ./",
+    "watch": "parcel watch src/*.html --public-url ./"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.6.4",
+    "@babel/plugin-transform-runtime": "^7.6.2",
+    "@babel/preset-env": "^7.6.3",
+    "autoprefixer": "^9.6.5",
+    "babel-loader": "^8.0.6",
+    "cssnano": "^4.1.10",
+    "node-sass": "^4.12.0",
+    "parcel-bundler": "^1.12.4",
+    "parcel-plugin-clean-dist": "0.0.6",
+    "postcss-modules": "^1.4.1"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.6.3",
+    "alertifyjs": "^1.13.1",
+    "bootstrap": "^4.3.1",
+    "jquery": "^3.4.1",
+    "lo": "^0.41.0",
+    "popper.js": "^1.15.0"
+  }
+}
