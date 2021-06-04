@@ -11,28 +11,11 @@ const txtmes = document.querySelector('#txtmes');
 const txtanio = document.querySelector('#txtanio');
 const txtcedula = document.querySelector('#txtcedula');
 
-const txtp_36 = document.querySelector('#p_36');
-
-/* Div contiene el input txt otra */
-const divotro27 = document.querySelector('#divotro128');
-const divotro28 = document.querySelector('#divotro132');
-const divotro29 = document.querySelector('#divotro29');
-const divotro30 = document.querySelector('#divotro30');
-const divotro31 = document.querySelector('#divotro31');
-const divotro34 = document.querySelector('#divotro34');
-const divotro35 = document.querySelector('#divotro35');
-/* input txt Otro */
-const txtotro_27 = document.querySelector('#txtotro128');
-const txtotro_28 = document.querySelector('#txtotro132');
-const txtotro_29 = document.querySelector('#txtotro29');
-const txtotro_30 = document.querySelector('#txtotro30');
-const txtotro_31 = document.querySelector('#txtotro31');
-const txtotro_34 = document.querySelector('#txtotro34');
-const txtotro_35 = document.querySelector('#txtotro35');
-
 //Botones de formularios
 const divFormulario = document.querySelector('#divFormContenido');
-const encuesta = document.querySelector('#encuesta');
+
+/* Arreglo de check y radio */
+let arrayIdOtros = null;
 
 document.addEventListener('DOMContentLoaded', () => {
 	$('#smartwizard').smartWizard({
@@ -74,6 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	//serviceGetUsuario(); //TODO: esta parte lo comento para hacer pruebas
 	/* OCULTAR DIVs OTRA */
 	ocultarTodosDivOtros();
+	imprimeMeses();
 });
 
 divFormulario.addEventListener('click', (e) => {
@@ -82,17 +66,21 @@ divFormulario.addEventListener('click', (e) => {
 		const idPregunta = e.target.getAttribute('data-prg');
 		let idStrForm = e.target.getAttribute('id');
 		let formulario = parseInt(idStrForm.substring(8, idStrForm.length));
-		formulario = formulario - 1; //ID DEL CUESTIONARIO
 		validacionCuestionarios(formulario, idPregunta);
 	}
-	/*  Evento del boton enviar
-	if (e.target.classList.contains('btnEnviar')) {
-		const idPregunta = e.target.getAttribute('data-id');
-		let idStrForm = e.target.getAttribute('id');
-		let formulario = parseInt(idStrForm.substring(8, idStrForm.length));
-		formulario = formulario - 1; //ID DEL CUESTIONARIO
-		validacionCuestionarios(formulario, idPregunta);
-	} */
+
+	/* Evento clik radio*/
+	if (e.target.classList.contains('radioclick')) {
+		const idStrCheck = e.target.getAttribute('id');
+		const idCheckBox = parseInt(idStrCheck.substring(8, idStrCheck.length));
+		const idPregunta = e.target.getAttribute('data-div');
+		if (buscarExiteIdCheckRadio(idCheckBox)) {
+			mostrarOcultarDivOtro(idCheckBox, idPregunta);
+		} else {
+			ocultarDivOtros(idPregunta);
+		}
+	}
+
 	/* Evento clik checkbox o radio*/
 	if (e.target.classList.contains('checkclick')) {
 		const idStrCheck = e.target.getAttribute('id');
@@ -104,12 +92,41 @@ divFormulario.addEventListener('click', (e) => {
 	}
 });
 
+const imprimeMeses = () => {
+	const meses = [
+		{ valor: 'Enero', id: 1 },
+		{ valor: 'Febrero', id: 2 },
+		{ valor: 'Marzo', id: 3 },
+		{ valor: 'Abril', id: 4 },
+		{ valor: 'Mayo', id: 5 },
+		{ valor: 'Junio', id: 6 },
+		{ valor: 'Julio', id: 7 },
+		{ valor: 'Agosto', id: 8 },
+		{ valor: 'Septiembre', id: 9 },
+		{ valor: 'Octubre', id: 10 },
+		{ valor: 'Noviembre', id: 11 },
+		{ valor: 'Diciembre', id: 12 },
+	];
+	const selectMeses = document.getElementById('txtmes'); //Seleccionamos el select
+	let optionx = document.createElement('option');
+	optionx.innerHTML = 'Mes';
+	optionx.value = '';
+	selectMeses.appendChild(optionx);
+
+	meses.forEach((mes) => {
+		let option = document.createElement('option'); //Creamos la opcion
+		option.innerHTML = mes.valor; //Metemos el texto en la opción
+		option.setAttribute('value', mes.id);
+		selectMeses.appendChild(option); //Metemos la opción en el select
+	});
+};
+
 const buscarExiteIdCheckRadio = (id) => {
 	let existe = false;
 	const arrayIdChecks = [128, 132, 136, 150, 158];
 	const arrayIdRadios = [141, 147];
-	let datos = arrayIdChecks.concat(arrayIdRadios);
-	existe = datos.some((checkid) => checkid === id);
+	arrayIdOtros = arrayIdChecks.concat(arrayIdRadios);
+	existe = arrayIdOtros.some((checkid) => checkid === id);
 	return existe;
 };
 
@@ -120,11 +137,17 @@ const ocultarTodosDivOtros = () => {
 	});
 };
 
+const ocultarDivOtros = (idPregunta) => {
+	const divOtro = document.querySelector('#divotro' + idPregunta);
+	const txtOtro = document.querySelector('#txtotro' + idPregunta);
+	divOtro.style.display = 'none';
+	txtOtro.value = '';
+};
+
 const mostrarOcultarDivOtro = (idCheckBox, idPregunta) => {
-	const divOtro = document.querySelector('#divotro' + idPregunta + '');
-	const txtOtro = document.querySelector('#txtotro' + idPregunta + '');
+	const divOtro = document.querySelector('#divotro' + idPregunta);
+	const txtOtro = document.querySelector('#txtotro' + idPregunta);
 	if (document.getElementById('checkbox' + idCheckBox).checked) {
-		swal('Especifique cuál');
 		divOtro.style.display = 'block';
 		txtOtro.focus();
 	} else {
@@ -133,7 +156,7 @@ const mostrarOcultarDivOtro = (idCheckBox, idPregunta) => {
 	}
 };
 
-const guardarOpcionSelecionadas = (idPregunta) => {
+const getOpcionesSelecionadas = (idPregunta) => {
 	let arryResp = [];
 	let checkboxs = document.querySelectorAll('input[name="p_' + idPregunta + '"]');
 	checkboxs.forEach((element) => {
@@ -149,7 +172,28 @@ const guardarOpcionSelecionadas = (idPregunta) => {
 };
 
 const validaExiteOtro = (arraySelect) => {
-	return arraySelect.some((elem) => elem == 'Otra');
+	let existe = false;
+	for (let i = 0; i < arraySelect.length; i++) {
+		if (arrayIdOtros.some((elem) => elem === arraySelect[i])) {
+			existe = true;
+			break;
+		}
+	}
+	return existe;
+};
+
+const procesando = (cadena, idPregunta, txtotro, paso, toStep = 0) => {
+	let data = { valor: cadena, id: idPregunta, otro: txtotro, step: paso };
+	service(data);
+	toStep > 0 ? $('#smartwizard').smartWizard('goToStep', toStep) : $('#smartwizard').smartWizard('next');
+};
+
+const selectOtroUnicamente = (arrayId) => {
+	let verifica = false;
+	if (validaExiteOtro(arrayId) && arrayId.length == 1) {
+		verifica = true;
+	}
+	return verifica;
 };
 
 const service = (data) => {
@@ -168,7 +212,7 @@ const service = (data) => {
 			estado: cmbestado.value,
 			id_pregunta: data.id,
 			respuesta: data.valor,
-			otro: data.otro ? data.otro.trim() : 'NULL',
+			otro: data.otro==='' ? 'NULL': data.otro.trim(),
 		},
 		async: false,
 		success: function (resp) {
@@ -181,49 +225,50 @@ const service = (data) => {
 	}); */
 };
 
-const validacionCuestionarios = (idformulario, idPregunta) => {
-	switch (idformulario) {
+const validacionCuestionarios = (idFormulario, idPregunta) => {
+	let opcion = idFormulario - 1; //ID DEL CUESTIONARIO
+	switch (opcion) {
 		case 0:
-			cuestionario_0(idPregunta); //----Base -->
+			cuestionario_0(idPregunta, idFormulario);
 			break;
 		case 1:
-			cuestionario_1(idPregunta); //----Numerica -->
+			cuestionario_1(idPregunta, idFormulario);
 			break;
 		case 2:
-			cuestionario_2(idPregunta); //----Numerica -->
+			cuestionario_2(idPregunta, idFormulario);
 			break;
 		case 3:
-			cuestionario_3(idPregunta); //----Radio-evaluacion -->
+			cuestionario_3(idPregunta, idFormulario);
 			break;
 		case 4:
-			cuestionario_4(idPregunta); //----Checkbox --
+			cuestionario_4(idPregunta, idFormulario);
 			break;
 		case 5:
-			cuestionario_5(idPregunta); //----Radio-evaluacion -->
+			cuestionario_5(idPregunta, idFormulario);
 			break;
 		case 6:
-			cuestionario_6(idPregunta); //----Checkbox -->
+			cuestionario_6(idPregunta, idFormulario);
 			break;
 		case 7:
-			cuestionario_7(idPregunta); //----Checkbox-->
+			cuestionario_7(idPregunta, idFormulario);
 			break;
 		case 8:
-			cuestionario_8(idPregunta); //----Checkbox -->
+			cuestionario_8(idPregunta, idFormulario);
 			break;
 		case 9:
-			cuestionario_9(idPregunta); //----Abierta -->
+			cuestionario_9(idPregunta, idFormulario);
 			break;
 		case 10:
-			cuestionario_10(idPregunta); //----Abierta -->
+			cuestionario_10(idPregunta, idFormulario);
 			break;
 
 		default:
-			console.error('El cuestionario no existe', idCuestionario);
+			console.error('El cuestionario: ' + opcion + ' ,No se encuentra pregunta:', idPregunta);
 			break;
 	}
 };
 
-const cuestionario_0 = (idPregunta) => {
+const cuestionario_0 = (idPregunta, idFormulario) => {
 	if (cmbespecialidad.value == '') {
 		swal('Seleccione una especialidad');
 		cmbespecialidad.focus();
@@ -250,36 +295,37 @@ const cuestionario_0 = (idPregunta) => {
 	}
 };
 
-const cuestionario_1 = (idPregunta) => {
-	const txtp_25 = document.getElementById('p_' + idPregunta);
-	if (txtp_25.value == '') {
+const cuestionario_1 = (idPregunta, idFormulario) => {
+	const txtpreg1 = document.getElementById('p_' + idPregunta);
+	if (txtpreg1.value == '') {
 		swal('Ingrese un número de pacientes');
-		txtp_25.focus();
+		txtpreg1.focus();
 	} else {
-		let data = { valor: txtp_25.value, id: 25, step: 1 };
+		let data = { valor: txtpreg1.value, id: idPregunta, step: idFormulario };
 		service(data);
 		$('#smartwizard').smartWizard('next');
 	}
 };
 
-const cuestionario_2 = (idPregunta) => {
-	const txtp_26 = document.getElementById('p_' + idPregunta);
-	if (txtp_26.value == '') {
+const cuestionario_2 = (idPregunta, idFormulario) => {
+	const txtpreg1 = document.getElementById('p_' + (parseInt(idPregunta) - 1));
+	const txtpreg2 = document.getElementById('p_' + idPregunta);
+	if (txtpreg2.value == '') {
 		swal('Ingrese un número de pacientes');
-		txtp_26.focus();
+		txtpreg2.focus();
 	} else {
-		if (txtp_26.value == 0) {
-			let data = { valor: txtp_26.value, id: 26, step: 2 };
+		if (txtpreg2.value == 0) {
+			let data = { valor: txtpreg2.value, id: idPregunta, step: idFormulario };
 			service(data);
 			$('#smartwizard').smartWizard('goToStep', 10);
 		} else {
-			if (parseInt(txtp_25.value) < parseInt(txtp_26.value)) {
+			if (parseInt(txtpreg1.value) < parseInt(txtpreg2.value)) {
 				swal(
-					'El número de pacientes con ansiedad no puede ser mayor al de los pacientes promedio que atiende al mes.'
+					'El número de pacientes con osteoporosis no puede ser mayor al de los pacientes promedio que atiende al mes.'
 				);
-				txtp_26.focus();
+				txtpreg2.focus();
 			} else {
-				let data = { valor: txtp_26.value, id: 26, step: 2 };
+				let data = { valor: txtpreg2.value, id: idPregunta, step: idFormulario };
 				service(data);
 				$('#smartwizard').smartWizard('next');
 			}
@@ -287,274 +333,238 @@ const cuestionario_2 = (idPregunta) => {
 	}
 };
 
-const cuestionario_3 = (idPregunta) => {
-	const arryResp = guardarOpcionSelecionadas(idPregunta);
-	if (arryResp.length == 0) {
-		swal('Seleccione al menos una opción');
-	} else {
-		/*  MAS OPCIONES SELECCIONADAS PERO NO EXISTE OTRAS*/
-		let data = {
-			valor: arryResp.toString(),
-			id: 27,
-			step: 4,
-		};
-		service(data);
-		$('#smartwizard').smartWizard('next');
-	}
-};
+const cuestionario_3 = (idPregunta, idFormulario) => {
+	const arrayOpciones = getOpcionesSelecionadas(idPregunta);
+	const cadena = getStringOpciones(arrayOpciones);
+	const arrayId = getIdsOpciones(arrayOpciones);
+	const txtotro = document.getElementById('txtotro' + idPregunta);
 
-const cuestionario_4 = (idPregunta) => {
-	const arrayObjResp = guardarOpcionSelecionadas(28);
-	const opcselectStr = getOpcionesSelectStr(arrayObjResp);
-	if (arryResp.length == 0) {
+	if (arrayOpciones.length == 0) {
 		swal(
 			'Seleccione el/los principios activos que conoce o ha oído nombrar aunque nunca las haya prescrito'
 		);
 	} else {
-		/* NADA MAS ESTA SELECCIONADA  OTRA*/
-		if (validaExiteOtro(arryResp) && arryResp.length == 1) {
-			if (txtotro_28.value == '') {
-				mostrarDivOtro(28);
+		/* NADA MAS SELECCIONO LA OPCION (OTRA) */
+		if (selectOtroUnicamente(arrayId)) {
+			if (txtotro.value == '') {
+				swal('Especifique cuál');
 			} else {
-				let opcion = 'lo anterior';
-				titulo19.innerHTML =
-					'¿Cuál es la razón más importante por lo que usted decidió prescribir ' + opcion + '?';
-				let data = {
-					valor: opcselectStr,
-					id: 28,
-					otro: txtotro_28.value,
-					step: 4,
-				};
-				service(data);
-				//$('#smartwizard').smartWizard("next");
-				$('#smartwizard').smartWizard('goToStep', 6);
+				procesando(cadena, idPregunta, txtotro.value, idFormulario);
 			}
+			console.log('NADA MAS SELECCIONO LA OPCION (OTRA)');
 		} else {
-			/* ESTA SELECCIONADO OTRA PERO MAS OPCIONES SELECCIONADAS */
-			if (validaExiteOtro(arryResp)) {
-				if (txtotro_28.value == '') {
-					mostrarDivOtro(28);
+			/* ESTA SELECCIONADO (OTRA) PERO CON MAS OPCIONES SELECCIONADAS */
+			if (validaExiteOtro(arrayId)) {
+				if (txtotro.value == '') {
+					swal('Especifique cuál');
 				} else {
-					let data = {
-						valor: arryResp.toString(),
-						id: 28,
-						otro: txtotro_28.value,
-						step: 4,
-					};
-					service(data);
-					$('#smartwizard').smartWizard('next');
+					procesando(cadena, idPregunta, txtotro.value, idFormulario);
 				}
+				console.log('ESTA SELECCIONADO (OTRA) PERO CON MAS OPCIONES SELECCIONADAS');
 			} else {
-				/*  MAS OPCIONES SELECCIONADAS PERO NO EXISTE OTRAS*/
-				let data = {
-					valor: arryResp.toString(),
-					id: 28,
-					step: 4,
-				};
-				service(data);
-				$('#smartwizard').smartWizard('next');
+				/* DENTRO DE LA SELECCIONADAS NO SE ENCUETRA (OTRA)*/
+				procesando(cadena, idPregunta, txtotro.value, idFormulario);
+				console.log('DENTRO DE LA SELECCIONADAS NO SE ENCUETRA (OTRA)');
 			}
 		}
 	}
 };
 
-const cuestionario_5 = (idPregunta) => {
-	const arryResp = guardarOpcionSelecionadas(29);
-	if (arryResp.length == 0) {
+const cuestionario_4 = (idPregunta, idFormulario) => {
+	const arrayOpciones = getOpcionesSelecionadas(idPregunta);
+	const cadena = getStringOpciones(arrayOpciones);
+	const arrayId = getIdsOpciones(arrayOpciones);
+	const txtotro = document.getElementById('txtotro' + idPregunta);
+
+	if (arrayOpciones.length == 0) {
 		swal(
 			'Seleccione el/los principios activos que conoce o ha oído nombrar aunque nunca las haya prescrito'
 		);
 	} else {
-		/* NADA MAS ESTA SELECCIONADA  OTRA*/
-		if (validaExiteOtro(arryResp) && arryResp.length == 1) {
-			if (txtotro_29.value == '') {
-				mostrarDivOtro(29);
+		/* NADA MAS SELECCIONO LA OPCION (OTRA) */
+		if (selectOtroUnicamente(arrayId)) {
+			if (txtotro.value == '') {
+				swal('Especifique cuál');
 			} else {
-				let opcion = 'lo anterior';
-				titulo19.innerHTML =
-					'¿Cuál es la razón más importante por lo que usted decidió prescribir ' + opcion + '?';
-				let data = {
-					valor: arryResp.toString(),
-					id: 29,
-					otro: txtotro_29.value,
-					step: 4,
-				};
-				service(data);
-				//$('#smartwizard').smartWizard("next");
-				$('#smartwizard').smartWizard('goToStep', 6);
+				procesando(cadena, idPregunta, txtotro.value, idFormulario);
 			}
+			console.log('NADA MAS SELECCIONO LA OPCION (OTRA)');
 		} else {
-			/* ESTA SELECCIONADO OTRA PERO MAS OPCIONES SELECCIONADAS */
-			if (validaExiteOtro(arryResp)) {
-				if (txtotro_29.value == '') {
-					mostrarDivOtro(29);
+			/* ESTA SELECCIONADO (OTRA) PERO CON MAS OPCIONES SELECCIONADAS */
+			if (validaExiteOtro(arrayId)) {
+				if (txtotro.value == '') {
+					swal('Especifique cuál');
 				} else {
-					let data = {
-						valor: arryResp.toString(),
-						id: 29,
-						otro: txtotro_29.value,
-						step: 4,
-					};
-					service(data);
-					$('#smartwizard').smartWizard('next');
+					procesando(cadena, idPregunta, txtotro.value, idFormulario);
 				}
+				console.log('ESTA SELECCIONADO (OTRA) PERO CON MAS OPCIONES SELECCIONADAS');
 			} else {
-				/*  MAS OPCIONES SELECCIONADAS PERO NO EXISTE OTRAS*/
-				let data = {
-					valor: arryResp.toString(),
-					id: 29,
-					step: 4,
-				};
-				service(data);
-				$('#smartwizard').smartWizard('next');
+				/* DENTRO DE LA SELECCIONADAS NO SE ENCUETRA (OTRA)*/
+				procesando(cadena, idPregunta, txtotro.value, idFormulario);
 			}
 		}
 	}
 };
 
-const cuestionario_6 = (idPregunta) => {
-	let resp30 = [];
-	let checks30 = document.querySelectorAll('input[name="p_30"]');
-	checks30.forEach(function (elem) {
-		if (elem.checked) {
-			resp30.push(elem.value);
+const cuestionario_5 = (idPregunta, idFormulario) => {
+	const arrayOpciones = getOpcionesSelecionadas(idPregunta);
+	const cadena = getStringOpciones(arrayOpciones);
+	const arrayId = getIdsOpciones(arrayOpciones);
+	const txtotro = document.getElementById('txtotro' + idPregunta);
+
+	if (arrayOpciones.length == 0) {
+		swal(
+			'Seleccione el/los principios activos que conoce o ha oído nombrar aunque nunca las haya prescrito'
+		);
+	} else {
+		/* NADA MAS SELECCIONO LA OPCION (OTRA) */
+		if (selectOtroUnicamente(arrayId)) {
+			if (txtotro.value == '') {
+				swal('Especifique cuál');
+			} else {
+				procesando(cadena, idPregunta, txtotro.value, idFormulario);
+			}
+		} else {
+			/* ESTA SELECCIONADO (OTRA) PERO CON MAS OPCIONES SELECCIONADAS */
+			if (validaExiteOtro(arrayId)) {
+				if (txtotro.value == '') {
+					swal('Especifique cuál');
+				} else {
+					procesando(cadena, idPregunta, txtotro.value, idFormulario);
+				}
+			} else {
+				/* DENTRO DE LA SELECCIONADAS NO SE ENCUETRA (OTRA)*/
+				procesando(cadena, idPregunta, txtotro.value, idFormulario);
+			}
 		}
-	});
-	if (resp30.length == 0) {
+	}
+};
+
+const cuestionario_6 = (idPregunta, idFormulario) => {
+	const arrayOpciones = getOpcionesSelecionadas(idPregunta);
+	const cadena = getStringOpciones(arrayOpciones);
+	const arrayId = getIdsOpciones(arrayOpciones);
+	const txtotro = document.getElementById('txtotro' + idPregunta);
+
+	if (arrayId.length == 0) {
 		swal('Elija una opción');
 	} else {
-		let opcion = resp30.toString();
-		titulo19.innerHTML =
-			'¿Cuál es la razón más importante por lo que usted decidió prescribir ' + opcion + '?';
-		//titulo19.innerHTML = "¿Cuál es la razón mas importante por lo que usted decidió prescribir "+ resp30.toString() +"?";
-		let data = { valor: resp30.toString(), id: 30, step: 5 };
-		service(data);
-		$('#smartwizard').smartWizard('next');
+		if (selectOtroUnicamente(arrayId)) {
+			if (txtotro.value == '') {
+				swal('Especifique cuál');
+			} else {
+				let data = { valor: cadena, id: idPregunta, step: idFormulario };
+				service(data);
+				$('#smartwizard').smartWizard('next');
+			}
+		} else {
+			let data = { valor: cadena, id: idPregunta, step: idFormulario };
+			service(data);
+			$('#smartwizard').smartWizard('next');
+		}
 	}
 };
 
-const cuestionario_7 = (idPregunta) => {
-	let resp31 = [];
-	let checks31 = document.querySelectorAll('input[name="p_31"]');
-	checks31.forEach(function (elem) {
-		if (elem.checked) {
-			resp31.push(elem.value);
-		}
-	});
-	if (resp31.length == 0) {
+const cuestionario_7 = (idPregunta, idFormulario) => {
+	const arrayOpciones = getOpcionesSelecionadas(idPregunta);
+	const cadena = getStringOpciones(arrayOpciones);
+	const arrayId = getIdsOpciones(arrayOpciones);
+	const txtotro = document.getElementById('txtotro' + idPregunta);
+
+	if (arrayId.length == 0) {
 		swal('Elija una opción');
 	} else {
-		let opcion = resp31.toString();
-		titulo19.innerHTML =
-			'¿Cuál es la razón más importante por lo que usted decidió prescribir ' + opcion + '?';
-		//titulo19.innerHTML = "¿Cuál es la razón mas importante por lo que usted decidió prescribir "+ resp31.toString() +"?";
-		let data = { valor: resp31.toString(), id: 31, step: 5 };
-		service(data);
-		$('#smartwizard').smartWizard('next');
-	}
-};
-
-const cuestionario_8 = (idPregunta) => {
-	const arryResp = guardarOpcionSelecionadas(34);
-	if (arryResp.length == 0) {
-		swal('Seleccione el/los efectos adversos mas frecuentes');
-	} else {
-		/* NADA MAS ESTA SELECCIONADA  OTRA*/
-		if (validaExiteOtro(arryResp) && arryResp.length == 1) {
-			if (txtotro_34.value == '') {
-				mostrarDivOtro(34);
+		if (selectOtroUnicamente(arrayId)) {
+			if (txtotro.value == '') {
+				swal('Especifique cuál');
 			} else {
-				let data = {
-					valor: arryResp.toString(),
-					id: 34,
-					otro: txtotro_34.value,
-					step: 7,
-				};
+				let data = { valor: cadena, id: idPregunta, step: idFormulario };
 				service(data);
 				$('#smartwizard').smartWizard('next');
 			}
 		} else {
-			/* ESTA SELECCIONADO OTRA PERO MAS OPCIONES SELECCIONADAS */
-			if (validaExiteOtro(arryResp)) {
-				if (txtotro_34.value == '') {
-					mostrarDivOtro(34);
+			let data = { valor: cadena, id: idPregunta, step: idFormulario };
+			service(data);
+			$('#smartwizard').smartWizard('next');
+		}
+	}
+};
+
+const cuestionario_8 = (idPregunta, idFormulario) => {
+	const arrayOpciones = getOpcionesSelecionadas(idPregunta);
+	const cadena = getStringOpciones(arrayOpciones);
+	const arrayId = getIdsOpciones(arrayOpciones);
+	const txtotro = document.getElementById('txtotro' + idPregunta);
+
+	if (arrayOpciones.length == 0) {
+		swal(
+			'Seleccione el/los principios activos que conoce o ha oído nombrar aunque nunca las haya prescrito'
+		);
+	} else {
+		/* NADA MAS SELECCIONO LA OPCION (OTRA) */
+		if (selectOtroUnicamente(arrayId)) {
+			if (txtotro.value == '') {
+				swal('Especifique cuál');
+			} else {
+				procesando(cadena, idPregunta, txtotro.value, idFormulario);
+			}
+		} else {
+			/* ESTA SELECCIONADO (OTRA) PERO CON MAS OPCIONES SELECCIONADAS */
+			if (validaExiteOtro(arrayId)) {
+				if (txtotro.value == '') {
+					swal('Especifique cuál');
 				} else {
-					let data = {
-						valor: arryResp.toString(),
-						id: 34,
-						otro: txtotro_34.value,
-						step: 7,
-					};
-					service(data);
-					$('#smartwizard').smartWizard('next');
+					procesando(cadena, idPregunta, txtotro.value, idFormulario);
 				}
 			} else {
-				/*  MAS OPCIONES SELECCIONADAS PERO NO EXISTE OTRAS*/
-				let data = {
-					valor: arryResp.toString(),
-					id: 34,
-					step: 7,
-				};
-				service(data);
-				$('#smartwizard').smartWizard('next');
+				/* DENTRO DE LA SELECCIONADAS NO SE ENCUETRA (OTRA)*/
+				procesando(cadena, idPregunta, txtotro.value, idFormulario);
 			}
 		}
 	}
 };
 
-const cuestionario_9 = (idPregunta) => {
-	const arryResp = guardarOpcionSelecionadas(35);
-	if (arryResp.length == 0) {
-		swal('Seleccione otras afecciones mentales se presentan con frecuencia en su práctica clínica');
+const cuestionario_9 = (idPregunta, idFormulario) => {
+	const arrayOpciones = getOpcionesSelecionadas(idPregunta);
+	const cadena = getStringOpciones(arrayOpciones);
+	const arrayId = getIdsOpciones(arrayOpciones);
+	const txtotro = document.getElementById('txtotro' + idPregunta);
+
+	if (arrayOpciones.length == 0) {
+		swal(
+			'Seleccione el/los principios activos que conoce o ha oído nombrar aunque nunca las haya prescrito'
+		);
 	} else {
-		/* NADA MAS ESTA SELECCIONADA  OTRA*/
-		if (validaExiteOtro(arryResp) && arryResp.length == 1) {
-			if (txtotro_35.value == '') {
-				mostrarDivOtro(35);
+		/* NADA MAS SELECCIONO LA OPCION (OTRA) */
+		if (selectOtroUnicamente(arrayId)) {
+			if (txtotro.value == '') {
+				swal('Especifique cuál');
 			} else {
-				let data = {
-					valor: arryResp.toString(),
-					id: 35,
-					otro: txtotro_35.value,
-					step: 8,
-				};
-				service(data);
-				$('#smartwizard').smartWizard('next');
+				procesando(cadena, idPregunta, txtotro.value, idFormulario);
 			}
 		} else {
-			/* ESTA SELECCIONADO OTRA PERO MAS OPCIONES SELECCIONADAS */
-			if (validaExiteOtro(arryResp)) {
-				if (txtotro_35.value == '') {
-					mostrarDivOtro(35);
+			/* ESTA SELECCIONADO (OTRA) PERO CON MAS OPCIONES SELECCIONADAS */
+			if (validaExiteOtro(arrayId)) {
+				if (txtotro.value == '') {
+					swal('Especifique cuál');
 				} else {
-					let data = {
-						valor: arryResp.toString(),
-						id: 35,
-						otro: txtotro_35.value,
-						step: 8,
-					};
-					service(data);
-					$('#smartwizard').smartWizard('next');
+					procesando(cadena, idPregunta, txtotro.value, idFormulario);
 				}
 			} else {
-				/*  MAS OPCIONES SELECCIONADAS PERO NO EXISTE OTRAS*/
-				let data = {
-					valor: arryResp.toString(),
-					id: 35,
-					step: 8,
-				};
-				service(data);
-				$('#smartwizard').smartWizard('next');
+				/* DENTRO DE LA SELECCIONADAS NO SE ENCUETRA (OTRA)*/
+				procesando(cadena, idPregunta, txtotro.value, idFormulario);
 			}
 		}
 	}
 };
 
-const cuestionario_10 = (idPregunta) => {
+const cuestionario_10 = (idPregunta, idFormulario) => {
+	const encuesta = document.querySelector('#encuesta');
+	const txtarea = document.getElementById('p_' + idPregunta);
 	let data = {
-		valor: txtp_36.value == '' ? '' : txtp_36.value,
-		id: 36,
-		step: 10,
+		valor: txtarea.value == '' ? '' : txtarea.value,
+		id: idPregunta,
+		step: idFormulario,
 	};
 	service(data);
 	encuesta.reset();
@@ -684,10 +694,16 @@ const serviceGetUsuario = () => {
 	});
 };
 
-const getOpcionesSelectStr = (arrayObjResp) => {
+const getStringOpciones = (arrayObjResp) => {
 	const selecionado = [];
 	arrayObjResp.forEach((elem) => selecionado.push(elem.valor));
 	return selecionado.toString();
+};
+
+const getIdsOpciones = (arrayObjResp) => {
+	const selecionado = [];
+	arrayObjResp.forEach((elem) => selecionado.push(elem.id));
+	return selecionado;
 };
 
 const insetarDatosBaseRedireccionar = (resp) => {
