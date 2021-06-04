@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	console.log(exite);
 });
 
-/* No si cumple la condicion sale del ciclo*/
+/* Si cumple la condicion sale del ciclo*/
 const validaExiteOtrosX = (arraySelect) => {
 	const arrayIdOtros = [128, 132, 136, 150, 158, 141, 147];
 	let existe = false;
