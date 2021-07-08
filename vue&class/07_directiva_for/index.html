@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body>
+		<div id="app">
+			<span>forma 1</span>
+			<ul>
+				<li v-for="n in 10">{{ 11-n }}</li>
+			</ul>
+			<hr />
+			<span>forma 2</span>
+			<ul>
+				<li v-for="n in [10,9,8,7,6,5,4,3,2,1]">{{n}}</li>
+			</ul>
+			<hr />
+			<span>forma 3</span>
+			<ul>
+				<li v-for="n in contador">{{n}}</li>
+			</ul>
+
+			<hr />
+			<span>forma 4</span>
+			<ul>
+				<li v-for="n in maximo">{{n}}</li>
+			</ul>
+		</div>
+
+		<script>
+			let app = new Vue({
+				el: '#app',
+				data: {
+					contador: [10, 9, 8, 7, 6, 5, 4, 3, 2, 1],
+					maximo: 15,
+				},
+			});
+		</script>
+	</body>
+</html>
