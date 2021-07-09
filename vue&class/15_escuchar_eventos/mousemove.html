@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body>
+		<div class="row">
+			<div id="app">
+				<button v-on:click="increase(10, $event)" class="button">Click This</button>
+				<h1>{{ counter }}</h1>
+				<p @:mousemove="updateCoordinates">
+					Coordinates: {{ x }} / {{ y }} <br />
+					<span v-on:moustmove.stop.preve="dummy">DEAD SPOT</span>
+				</p>
+			</div>
+		</div>
+		<script>
+			new Vue({
+				el: '#app',
+				data: {
+					counter: 0,
+					x: 0,
+					y: 0,
+				},
+				methods: {
+					// pass own argument step
+					increase: function (step, event) {
+						this.counter += step;
+					},
+					updateCoordinates: function (event) {
+						// pass event object, bound to mouse move with updat
+						this.x = event.clientX;
+						this.y = event.clientY;
+					},
+				},
+			});
+		</script>
+	</body>
+</html>
