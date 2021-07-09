@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body>
+		<div id="app">
+			{{'usted toro albino.' | capitalize}}
+			<br />
+			<p>
+				Puede definir <strong>filtros locales</strong> en las opciones de un componente: o establecer
+				<strong>filtros globalmente</strong>
+				antes de crear la instancia de Vue:
+			</p>
+			<br />
+			{{ '08/07/2021' | formatoFecha}}
+		</div>
+
+		<script>
+			Vue.filter('capitalize', (cadena) => {
+				let primerCaracter = cadena.charAt(0).toUpperCase();
+				let restoCarateres = cadena.slice(1, cadena.length);
+				return primerCaracter + restoCarateres;
+			});
+
+			let app = new Vue({
+				el: '#app',
+				methods: {
+					saludar: function () {
+						return 'hOLA Mundo!!';
+					},
+				},
+				filters: {
+					formatoFecha: function (fecha) {
+						const meses = [
+							'Enero',
+							'Febrero',
+							'Marzo',
+							'Abril',
+							'Mayo',
+							'Junio',
+							'Julio',
+							'Agosto',
+							'Septiembre',
+							'Octubre',
+							'Noviembre',
+							'Diciembre',
+						];
+						let [dia, mes, anio] = fecha.split('/');
+						let nameMes = meses[parseInt(mes)];
+						return dia + '/' + nameMes + '/' + anio;
+					},
+				},
+			});
+		</script>
+	</body>
+</html>
