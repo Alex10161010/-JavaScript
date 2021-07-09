@@ -20,10 +20,11 @@
 		</div>
 
 		<script>
-			Vue.filter('capitalize', (cadena) => {
-				let primerCaracter = cadena.charAt(0).toUpperCase();
+			Vue.filter('capitalize', ([primerCaracter, ...restoCarateres]) => {
+				/*let primerCaracter = cadena.charAt(0).toUpperCase();
 				let restoCarateres = cadena.slice(1, cadena.length);
-				return primerCaracter + restoCarateres;
+				return primerCaracter + restoCarateres;*/
+				return primerCaracter.toUpperCase() + restoCarateres.join('');
 			});
 
 			let app = new Vue({
@@ -55,6 +56,10 @@
 					},
 				},
 			});
+
+			let capitalize = ([primerCaracter, ...restoCarateres]) => {
+				return primerCaracter.toUpperCase() + restoCarateres.join('');
+			};
 		</script>
 	</body>
 </html>
