@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body>
+		<div id="app">
+			<h3>Eventos del Teclado y Click</h3>
+			<input type="text" v-model="inicontador" v-on:keyup.enter="cambiarContador" /><br />
+			<button v-on:click="aumentarContador">Sumar +1</button>
+			<p>{{contador}}</p>
+			<h3>Métodos Manejadores en línea</h3>
+			<p>
+				En lugar de enlazar directamente con un nombre de método, también podemos usar métodos en una
+				declaración de JavaScript en línea
+			</p>
+			<button v-on:click="mensaje('hola',$event)">Di hola</button>
+			<button @click="mensaje('que', $event)">Di que</button>
+		</div>
+
+		<script>
+			let app = new Vue({
+				el: '#app',
+				data: {
+					titulo: 'Sumar, Restar',
+					inicontador: 0,
+					contador: 1,
+				},
+				methods: {
+					aumentarContador: function () {
+						this.contador++;
+					},
+					cambiarContador: function () {
+						this.contador = this.inicontador;
+					},
+					mensaje: function (msj, event) {
+						// ahora tenemos acceso al evento nativo.
+						if (event) event.preventDefault();
+						alert(msj);
+					},
+				},
+			});
+
+			// también puedes invocar métodos en JavaScript.
+			app.aumentarContador();
+		</script>
+	</body>
+</html>
