@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body>
+		<div id="app">
+			<p>
+				Propidades <strong>Computadas o Calculadas</strong> este tipo de propiedades se utiliza para el
+				manejo de datos dentro de Vue y cuando estos datos se cambian de forma reactiva al aver un
+				cambio, de forma reactiva una propiedad computada lo que hace es actualizar esa reactividad en
+				otros componentes o en otros valores dentro de la aplicacion.
+			</p>
+
+			<input type="text" v-model="nombre" />
+			<input type="text" id="apellido" value="Snow" />
+			<button c-on:click="guardarApellido">Guardar Apellido</button>
+			<output> {{computedNombreCompleto}} </output>
+		</div>
+
+		<script>
+			let apellido = 'Snow';
+			let app = new Vue({
+				el: '#app',
+				data: {
+					nombre: 'Alejandro',
+				},
+				methods: {
+					guardarApellido: function () {
+						apellido = this.$el.querySelector('#apellido').value;
+					},
+				},
+				computed: {
+					computedNombreCompleto: function () {
+						return this.nombre + '' + apellido;
+					},
+				},
+			});
+		</script>
+	</body>
+</html>

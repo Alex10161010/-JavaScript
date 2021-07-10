@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body>
+		<div class="row" id="app">
+			<table style="width: 100%" border="1">
+				<caption>
+					Represas y su poder de generar electricidad
+				</caption>
+				<thead>
+					<tr>
+						<th>Nombre</th>
+						<th>Pais</th>
+						<th>Electricidad</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-for="item in presasElecticidad" v-show="mostrar">
+						<td>{{item.nombre}}</td>
+						<td>{{item.pais}}</td>
+						<td align="right">{{item.electicidad}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<script>
+			let app = new Vue({
+				el: '#app',
+				data: {
+					mostrar: true,
+					presas: [
+						{ nombre: 'Presa Nurek', pais: 'Tajilistan', electicidad: 32000 },
+						{ nombre: 'Tres Gargantas', pais: 'China', electicidad: 22500 },
+						{ nombre: 'Presa Tarbela', pais: 'Pakistan', electicidad: 3500 },
+						{ nombre: 'Presa Guri', pais: 'Venezuela', electicidad: 10200 },
+					],
+				},
+				methods: {},
+				computed: {
+					presasElecticidad: function () {
+						return this.presas.sort((a, b) => b.electicidad - a.electicidad);
+					},
+				},
+			});
+		</script>
+	</body>
+</html>
