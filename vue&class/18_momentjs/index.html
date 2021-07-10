@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body>
+		<div id="app">
+			<span>Fecha: {{fechaIndependencia |formatoFecha}}</span>
+			<p>
+				La Independencia de México fue la consecuencia de un proceso político y social resuelto con las
+				armas, que puso fin al dominio español en la mayor parte de los territorios de Nueva España.
+			</p>
+		</div>
+
+		<!-- moment.js-->
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"
+			integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		></script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/es.min.js"
+			integrity="sha512-L6Trpj0Q/FiqDMOD0FQ0dCzE0qYT2TFpxkIpXRSWlyPvaLNkGEMRuXoz6MC5PrtcbXtgDLAAI4VFtPvfYZXEtg=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		></script>
+
+		<script>
+			let app = new Vue({
+				el: '#app',
+				data: {
+					fechaIndependencia: '1821/09/27',
+				},
+				filters: {
+					formatoFecha: function (date) {
+						return moment(date).format('LL');
+					},
+				},
+			});
+		</script>
+	</body>
+</html>
