@@ -23,11 +23,19 @@ const deadpool = {
 	},
 };
 
-/*
-desestructuración del objecto
+/* Desestructuración de objetos*/
+const user = {
+	id: 42,
+	is_verified: true,
+};
+
+const { id, is_verified } = user;
+
+console.log(id); // 42
+console.log(is_verified); // true
+
 const { nombre, apellido, poder, edad = 0 } = deadpool;
-	console.log(nombre, apellido, poder, edad);
-*/
+console.log(nombre, apellido, poder, edad);
 
 /* Desestructuración en los argumentos */
 function imprimeHeroe({ nombre, apellido, poder, edad = 50 }) {
