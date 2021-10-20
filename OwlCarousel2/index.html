@@ -11,7 +11,7 @@
 			integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
 			crossorigin="anonymous"
 		/>
-
+		<!-- Owl Carousel | 2.3.4 | CSS -->
 		<link
 			rel="stylesheet"
 			href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
@@ -21,7 +21,7 @@
 		/>
 	</head>
 	<body>
-		<h2>d</h2>
+		<h2>Owl Carousel</h2>
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12">
@@ -64,6 +64,7 @@
 			crossorigin="anonymous"
 		></script>
 
+		<!-- Owl Carousel | 2.3.4 | JS -->
 		<script
 			src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"
 			integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw=="
@@ -72,14 +73,14 @@
 		></script>
 
 		<script>
-			var owl = $('.owl-carousel');
+			let owl = $('.owl-carousel');
 			$(document).ready(function () {
 				owl.owlCarousel({
 					items: 1,
 					loop: true,
 					margin: 10,
 					autoplay: true,
-					autoplayTimeout: 1000,
+					autoplayTimeout: 3000,
 					autoplayHoverPause: true,
 				});
 				$('.play').on('click', function () {
