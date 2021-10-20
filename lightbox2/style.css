@@ -1,0 +1,7 @@
+.boxubicacion {
+	width: 600px;
+	height: 500px;
+	overflow: hidden;
+	/* Todo lo que sobresalga del tamaño definido de caja no se vera*/
+	margin-bottom: 30px;
+}
